@@ -1,0 +1,320 @@
+@import "tailwindcss";
+
+/* ==========================================================
+   1. TOKENS
+   ========================================================== */
+:root {
+  --bg: #07041a;
+  --surface: rgba(18, 12, 38, 0.6);
+  --surface-hover: rgba(24, 16, 50, 0.75);
+  --border: rgba(148, 130, 220, 0.14);
+  --border-hover: rgba(168, 85, 247, 0.45);
+  --accent: #a855f7;
+  --accent-strong: #9333ea;
+  --text: #e2e8f0;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    background-color: var(--bg);
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+::selection { background: rgba(168, 85, 247, 0.35); color: #fff; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2a2050; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #3b2d70; }
+
+/* ==========================================================
+   2. EFFET 3D DES PROJETS (inchangé)
+   ========================================================== */
+.perspective-1000 { perspective: 1000px; }
+.transform-style-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }
+
+/* ==========================================================
+   3. KEYFRAMES (sobres)
+   ========================================================== */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ==========================================================
+   4. TYPOGRAPHIE
+   ========================================================== */
+h1, h2, h3 { letter-spacing: -0.02em; }
+h1 { line-height: 1.05; }
+
+/* Petits titres au-dessus des sections */
+section p.uppercase {
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+
+/* ==========================================================
+   5. NAVBAR
+   ========================================================== */
+nav {
+  background-color: rgba(7, 4, 26, 0.72) !important;
+  border-color: var(--border) !important;
+}
+nav div.hidden > a:not(:last-of-type) { position: relative; }
+nav div.hidden > a:not(:last-of-type)::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+nav div.hidden > a:not(:last-of-type):hover::after { transform: scaleX(1); }
+
+/* ==========================================================
+   6. HERO : entrée discrète, une seule fois
+   ========================================================== */
+#hero > div > * {
+  opacity: 0;
+  animation: fade-up 0.7s var(--ease) forwards;
+}
+#hero > div > :nth-child(1) { animation-delay: 0.05s; }
+#hero > div > :nth-child(2) { animation-delay: 0.15s; }
+#hero > div > :nth-child(3) { animation-delay: 0.25s; }
+#hero > div > :nth-child(4) { animation-delay: 0.35s; }
+#hero > div > :nth-child(5) { animation-delay: 0.45s; }
+#hero > div > :nth-child(6) { animation-delay: 0.55s; }
+
+/* Photo : anneau fin, pas d'effet clinquant */
+#hero .rounded-full {
+  border: 1px solid var(--border-hover);
+  box-shadow: 0 0 0 6px rgba(168, 85, 247, 0.08), 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================
+   7. CARTES
+   ========================================================== */
+.rounded-2xl:not(.backface-hidden),
+a.rounded-xl {
+  border-radius: 14px;
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.rounded-2xl:not(.backface-hidden):hover,
+a.rounded-xl:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+/* Cartes projets (flip 3D) */
+.backface-hidden {
+  border-radius: 14px;
+  background: var(--surface) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-color: var(--border);
+}
+.backface-hidden.rotate-y-180 { border-color: var(--border-hover); }
+
+/* Pastilles */
+section span.rounded-md {
+  background: rgba(148, 130, 220, 0.1);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, color 0.2s;
+}
+section span.rounded-md:hover { border-color: var(--border-hover); color: #fff; }
+
+/* ==========================================================
+   8. BARRES DE PROGRESSION
+   ========================================================== */
+div[style*="width"] {
+  transform-origin: left center;
+  animation: grow 1s var(--ease) both;
+}
+
+/* ==========================================================
+   9. TIMELINE
+   ========================================================== */
+#experience .border-l,
+#education .border-l { border-color: var(--border); }
+#experience .relative > .absolute,
+#education .relative > .absolute {
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+}
+
+/* ==========================================================
+   10. BOUTONS
+   ========================================================== */
+#hero a,
+button[type="submit"] {
+  border-radius: 10px;
+  transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+#hero a:hover,
+button[type="submit"]:hover { transform: translateY(-1px); }
+
+#hero a[href="#contact"],
+button[type="submit"] { color: #fff; }
+#hero a[href="#contact"]:hover,
+button[type="submit"]:hover { background-color: var(--accent-strong); }
+
+/* ==========================================================
+   11. FORMULAIRE
+   ========================================================== */
+input, textarea {
+  border-radius: 10px;
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, textarea:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+/* ==========================================================
+   12. APPARITION AU SCROLL (CSS pur, Chrome/Edge récents)
+   ========================================================== */
+@supports (animation-timeline: view()) {
+  section:not(#hero) > div {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+  div[style*="width"] {
+    animation: grow linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 30%;
+  }
+}
+
+/* ==========================================================
+   13. ACCESSIBILITÉ
+   ========================================================== */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  #hero > div > * { opacity: 1; }
+}
+
+/* ==========================================================
+   14. BOUTON MODE JOUR / NUIT
+   ========================================================== */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #94a3b8;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--border-hover); }
+.theme-toggle svg { animation: fade-up 0.35s var(--ease); }
+
+/* Transition douce au changement de thème */
+html.theme-anim *,
+html.theme-anim *::before,
+html.theme-anim *::after {
+  transition: background-color 0.35s, color 0.35s, border-color 0.35s !important;
+}
+
+/* ==========================================================
+   15. MODE JOUR  ( [data-theme="light"] )
+   ========================================================== */
+[data-theme="light"] {
+  --bg: #f6f4fc;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-hover: rgba(255, 255, 255, 0.95);
+  --border: rgba(91, 60, 170, 0.14);
+  --border-hover: rgba(124, 58, 237, 0.45);
+  --accent: #7c3aed;
+  --accent-strong: #6d28d9;
+  --text: #1e1b3a;
+  color-scheme: light;
+}
+[data-theme="dark"] { color-scheme: dark; }
+
+/* Textes */
+[data-theme="light"] .text-white { color: #1a1633; }
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300 { color: #3b3560; }
+[data-theme="light"] .text-slate-400 { color: #5b5680; }
+[data-theme="light"] .text-slate-500 { color: #7a759c; }
+[data-theme="light"] .theme-toggle { color: #5b5680; }
+
+/* Boutons principaux : texte blanc conservé */
+[data-theme="light"] #hero a[href="#contact"],
+[data-theme="light"] button[type="submit"] { color: #fff; }
+
+/* Navbar */
+[data-theme="light"] nav {
+  background-color: rgba(246, 244, 252, 0.8) !important;
+  box-shadow: 0 1px 0 rgba(91, 60, 170, 0.06);
+}
+[data-theme="light"] nav [class*="bg-[#0d0d12]"] { background-color: rgba(246, 244, 252, 0.97); }
+
+/* Pistes de barres, icônes, pastilles */
+[data-theme="light"] [class*="bg-[#27272a]"] { background-color: rgba(91, 60, 170, 0.1); }
+[data-theme="light"] section span.rounded-md {
+  background: rgba(91, 60, 170, 0.07);
+  color: #3b3560;
+}
+[data-theme="light"] section span.rounded-md:hover { color: #1a1633; }
+
+/* Cartes */
+[data-theme="light"] .rounded-2xl:not(.backface-hidden),
+[data-theme="light"] a.rounded-xl {
+  box-shadow: 0 1px 2px rgba(30, 20, 80, 0.04), 0 8px 24px -12px rgba(30, 20, 80, 0.12);
+}
+[data-theme="light"] .backface-hidden { box-shadow: 0 8px 24px -12px rgba(30, 20, 80, 0.15); }
+
+/* Photo du hero */
+[data-theme="light"] #hero .rounded-full {
+  box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.08), 0 20px 40px -20px rgba(30, 20, 80, 0.3);
+}
+
+/* Formulaire */
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder { color: #8a85a8; }
+
+/* Scrollbar */
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #cfc6ee; }
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #b8abe6; }
